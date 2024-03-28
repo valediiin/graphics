@@ -97,6 +97,10 @@ public class GraphWithObservableModelImpl<N, A> extends GraphImpl<N, A> implemen
     @Override
     public Edge<N, A> addEdge(N start, N destination, Optional<A> annotation){
 
+        if(start.equals(destination)){
+            throw new IllegalArgumentException();
+        }
+
         Edge<N, A> edge = super.addEdge(start, destination, annotation);
         aeListeners.forEach(l -> l.accept(edge));
 

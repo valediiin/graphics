@@ -51,7 +51,7 @@ public class SearchFactory<N, A> {
      * @return a new SearchAlgorithm instance which searches the specified Graph with a BreadthFirstSearch starting at the specified start node
      */
     public <G extends WeightedGraph<N, A>> SearchAlgorithm<N, A, G> getDijkstra(G graph, N start) {
-        return new DijkstraSearch<>();
+        return new DijkstraSearch<>(graph, start);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SearchFactory<N, A> {
      */
 
     public <G extends WeightedGraph<N, A>> SearchAlgorithm<N, A, G> getAStar(G graph, N start, N dest, EstimationFunction<N> estimationFunction) {
-        return new AStarSearch<>();
+        return new AStarSearch<>(graph,start,dest,estimationFunction);
     }
 
 

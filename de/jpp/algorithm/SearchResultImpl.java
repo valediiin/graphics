@@ -42,7 +42,8 @@ public class SearchResultImpl<N, A> implements ObservableSearchResult<N, A> {
 
     @Override
     public Optional<Edge<N, A>> getPredecessor(N node) {
-        return infoMap.containsKey(node) && infoMap.get(node).getPredecessor() != null ? Optional.of(infoMap.get(node).getPredecessor()) : Optional.empty();
+        return infoMap.containsKey(node) && infoMap.get(node).getPredecessor() != null ? Optional.of(infoMap.get(node).getPredecessor())
+                : Optional.empty();
     }
 
     @Override
@@ -103,6 +104,9 @@ public class SearchResultImpl<N, A> implements ObservableSearchResult<N, A> {
             edges.add(cur);
             cur = getPredecessor(cur.getStart()).orElse(null);
         }
+
+        Collections.reverse(edges);
+
         return Optional.of(edges);
     }
 

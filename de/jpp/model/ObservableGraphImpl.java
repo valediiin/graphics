@@ -15,6 +15,7 @@ public class ObservableGraphImpl<N, A> extends GraphWithObservableModelImpl<N, A
     private final List<Consumer<Collection<Edge<N, A>>>> rlListeners = new ArrayList<>();
     private final List<Consumer<Collection<Edge<N, A>>>> eListeners = new ArrayList<>();
 
+
     @Override
     public Collection<Edge<N, A>> getNeighbours(N node){
 

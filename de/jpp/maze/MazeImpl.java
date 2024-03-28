@@ -30,10 +30,10 @@ public class MazeImpl implements Maze {
     @Override
     public void setHWall(int x, int y, boolean wallActive) {
 
-        if(x >= 0 && x < width && y >= 0 && y < height){
+        if(x >= 0 && x < width && y >= 0 && y < height - 1){
             hWalls.get(y).set(x, wallActive);
         } else {
-            throw new IllegalArgumentException("Invalid x and y");
+            throw new IllegalArgumentException(" setHWall Invalid x and y");
         }
     }
 
@@ -109,7 +109,7 @@ public class MazeImpl implements Maze {
         if(x >= 0 && x < width && y >= 0 && y < height - 1){
             return hWalls.get(y).get(x);
         } else {
-            throw new IllegalArgumentException("Invalid x and y");
+            throw new IllegalArgumentException(" isHWall Active Invalid x and y");
         }
     }
 
@@ -128,8 +128,6 @@ public class MazeImpl implements Maze {
         } else {
             throw new IllegalArgumentException("Invalid x and y");
         }
-
-
     }
 
     @Override

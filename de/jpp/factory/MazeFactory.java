@@ -19,7 +19,7 @@ public class MazeFactory {
     public static void main(String[] args) throws IOException {
         Random ran = new Random();
         //Maze m = MazeFactory.getRandomMaze(ran, 10, 15);
-        Maze m = new MazeFactory().getEmptyMaze(5, 5);
+        Maze m = new MazeFactory().getEmptyMaze(5, 3);
         m.setHWall(0,0, true);
         BufferedImage img = new MazeFactory().getMazeAsImage(m);
         ImageIO.write(img, "png", new File("img.png"));

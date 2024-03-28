@@ -28,16 +28,20 @@ public class DepthFirstSearch<N, A, G extends Graph<N, A>> extends SearchAlgorit
         twoDimGraph.addEdge(xyNode1, xyNode2);
         twoDimGraph.addEdge(xyNode2, xyNode3);
         twoDimGraph.addEdge(xyNode3, xyNode4);
-        twoDimGraph.addEdge(xyNode4, xyNode5);
-        twoDimGraph.addEdge(xyNode5, xyNode6);
+
 
         DepthFirstSearch depthFirstSearch = new DepthFirstSearch(twoDimGraph, xyNode1);
 
-        System.out.println(depthFirstSearch.findPaths(new StartToDestStrategy(xyNode4)).getPathTo(xyNode4));
+        System.out.println(depthFirstSearch.findPaths(new StartToDestStrategy(xyNode3)).getPathTo(xyNode3));
+        System.out.println();
+        //System.out.println(depthFirstSearch.findPaths(new StartToDestStrategy(xyNode4)).getPathTo(xyNode4));
     }
 
     @Override
     public SearchResult<N, A> findPaths(SearchStopStrategy<N> type) {
+
+        result.clear();
+
         Stack<N> stack = new Stack<>();
         NodeInformation<N, A> sInfo = new NodeInformation<>();
         sInfo.setPredecessor(null);
@@ -47,13 +51,16 @@ public class DepthFirstSearch<N, A, G extends Graph<N, A>> extends SearchAlgorit
 
         while (!(stack.isEmpty() || stopped)){
             N cur = stack.pop();
-
+            //System.out.println(cur);
             if(result.getNodeStatus(cur) != NodeStatus.CLOSED){
+                System.out.println("Graph:," + graph);
+                System.out.println("Result:" + result.getAllKnownNodes());
                 graph.getNeighbours(cur).stream()
                         .filter(e -> result.getNodeStatus(e.getDestination()) != NodeStatus.CLOSED)
                         .forEach(e ->
                         {
                             NodeInformation<N, A> info = new NodeInformation<>();
+                            System.out.println(e);
                             info.setPredecessor(e);
                             info.setDistance(result.getInformation(e.getStart()).getDistance() + 1);
                             result.open(e.getDestination(), info);
@@ -68,6 +75,7 @@ public class DepthFirstSearch<N, A, G extends Graph<N, A>> extends SearchAlgorit
             }
 
         }
+
         return result;
     }
 }

@@ -45,6 +45,7 @@ public class SearchStopFactory {
         private int count = 0;
 
         public void setMaxCount(int maxCount){
+
             this.maxCount = maxCount;
         }
         @Override

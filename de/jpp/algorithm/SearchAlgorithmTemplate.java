@@ -14,8 +14,8 @@ public abstract class SearchAlgorithmTemplate<N, A, G extends Graph<N, A>> imple
 
     @Override
     public void stop(){
+
         stopped = true;
-        result.getAllOpenNodes().forEach(result::setStatusUnkown);
     }
 
     @Override
