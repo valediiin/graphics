@@ -16,11 +16,11 @@ public class MazeImpl implements Maze {
     public MazeImpl(int width, int height) {
         this.width = width;
         this.height = height;
-        IntStream.range(0, height).forEach(i -> hWalls.add(IntStream.range(0, width - 1).mapToObj(si -> false).collect(Collectors.toList())));
-        IntStream.range(0, height - 1).forEach(i -> vWalls.add(IntStream.range(0, width).mapToObj(si -> false).collect(Collectors.toList())));
+        IntStream.range(0, width - 1).forEach(i -> hWalls.add(IntStream.range(0, height).mapToObj(si -> false).collect(Collectors.toList())));
+        IntStream.range(0, width).forEach(i -> vWalls.add(IntStream.range(0, height - 1).mapToObj(si -> false).collect(Collectors.toList())));
 
-        System.out.println(hWalls);
-        System.out.println(vWalls);
+        //System.out.println("HWalls:" + hWalls);
+        //System.out.println("VWalls: " + vWalls);
         //System.out.println(hWalls);
 
         /*// Erstellen der horizontalen Wände (hWalls)
@@ -52,9 +52,9 @@ public class MazeImpl implements Maze {
     @Override
     public void setHWall(int x, int y, boolean wallActive) {
 
-        System.out.println("Horizontale Wand gesetzt : " + x + "/" + y);
+        //System.out.println("Horizontale Wand gesetzt : " + x + "/" + y);
 
-        hWalls.get(y).set(x, wallActive);
+        hWalls.get(x).set(y, wallActive);
 
     }
 
@@ -68,9 +68,9 @@ public class MazeImpl implements Maze {
     @Override
     public void setVWall(int x, int y, boolean wallActive) {
 
-        System.out.println("Vertikale Wand gesetzt : " + x + "/" + y);
+        //System.out.println("Vertikale Wand gesetzt : " + x + "/" + y);
 
-        vWalls.get(y).set(x, wallActive);
+        vWalls.get(x).set(y, wallActive);
 
     }
 
@@ -83,20 +83,20 @@ public class MazeImpl implements Maze {
     public void setAllWalls(boolean wallActive) {
 
         //hWalls
-        System.out.println(hWalls);
+        //System.out.println("HWalls: " + hWalls);
         for(int i = 0; i < height; i++){
             for (int j = 0; j < width - 1; j++){
-                System.out.println(i + " " + j);
-                hWalls.get(i).set(j, wallActive);
+                //System.out.println(i + " " + j);
+                hWalls.get(j).set(i, wallActive);
             }
         }
 
         //vWalls
-        System.out.println(vWalls);
+        //System.out.println(vWalls);
         for(int i = 0; i < height - 1; i++){
-            for (int j = 0; j < width - 1; j++){
+            for (int j = 0; j < width; j++){
                 //System.out.println(i + " " + j);
-                vWalls.get(i).set(j, wallActive);
+                vWalls.get(j).set(i, wallActive);
             }
         }
 
@@ -146,7 +146,7 @@ public class MazeImpl implements Maze {
     public boolean isHWallActive(int x, int y) {
 
         if(x >= 0 && x < width - 1 && y >= 0 && y < height){
-            return hWalls.get(y).get(x);
+            return hWalls.get(x).get(y);
         }
 
         return false;
@@ -163,7 +163,7 @@ public class MazeImpl implements Maze {
     public boolean isVWallActive(int x, int y) {
 
         if(x >= 0 && x < width && y >= 0 && y < height - 1){
-            return vWalls.get(y).get(x);
+            return vWalls.get(x).get(y);
         }
 
         return false;

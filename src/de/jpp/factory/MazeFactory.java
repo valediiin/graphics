@@ -16,6 +16,28 @@ import java.util.Random;
 
 public class MazeFactory {
 
+    public static void main(String[] args) throws IOException {
+        Random ran = new Random();
+        Maze m = MazeFactory.getRandomMaze(ran, 10, 10)
+        //Maze m = new MazeFactory().getEmptyMaze(5, 3);
+        //m.setAllWalls(true);
+       /*
+        m.setHWall(0,0,true);
+        m.setHWall(0,0,true);
+        m.setVWall(1,1,true);
+        m.setVWall(0,0,true);
+        m.setHWall(0,1,true);
+        m.setHWall(0,2,true);
+        m.setHWall(1,1,true);
+        m.setHWall(2,1,true)
+        */;
+        m.setHWall(0,0,true);
+
+        System.out.println(m.isHWallActive(2,1));
+        BufferedImage img = new MazeFactory().getMazeAsImage(m);
+        ImageIO.write(img, "png", new File("img.png"));
+
+    }
 
 
     /**
@@ -54,12 +76,12 @@ public class MazeFactory {
 
     private static void divideVert(Maze m, Random ran, int x, int y, int w, int h) {
         int rnd1 = ran.nextInt(h - 1);
-        int rnd2 = ran.nextInt(w);
+        int rnd2 = ran.nextInt(w - 1);
 
         for (int i = 0; i < w; i++)
             if (i != rnd2) {
-                System.out.println("Setting HWall at: " + (x + i) + "|" + (y + rnd1) + " to " + true);
-                m.setHWall(x + i, y + rnd1, true);
+                System.out.println(i + " ");
+                 m.setHWall(x + i, y + rnd1, true);
             }
 
 
@@ -70,7 +92,7 @@ public class MazeFactory {
 
     private static void divideHoriz(Maze m, Random ran, int x, int y, int w, int h) {
         int rnd1 = ran.nextInt(w - 1);
-        int rnd2 = ran.nextInt(h);
+        int rnd2 = ran.nextInt(h - 1);
 
         for (int i = 0; i < h; i++)
             if (i != rnd2)
@@ -158,38 +180,23 @@ public class MazeFactory {
         for (int y = 0; y < maze.getHeight(); y++) {
             for (int x = 0; x < maze.getWidth(); x++) {
                 // Horizontale Wand und nicht am unteren Rand des Labyrinths
-                if (y < maze.getHeight() - 1) {
+                if (y < maze.getHeight()) {
                     if (maze.isHWallActive(x, y)) {
-                        img.setRGB((x * 2) + 2, (y * 2) + 1, yellow.getRGB());
+                        img.setRGB((x * 2) + 2, (y * 2) + 1, black.getRGB());
                     }
                 }
 
                 // Vertikale Wand und nicht am rechten Rand des Labyrinths
-                if (x < maze.getWidth() - 1) {
+                if (x < maze.getWidth()) {
                     if (maze.isVWallActive(x, y)) {
                         // Beibehalten der korrekten Position für das Zeichnen der vertikalen Wand
-                        img.setRGB((x * 2) + 1, (y * 2) + 2, orange.getRGB());
+                        img.setRGB((x * 2) + 1, (y * 2) + 2, black.getRGB());
                     }
                 }
             }
         }
 
         return img;
-    }
-
-    public static void main(String[] args) throws IOException {
-        Random ran = new Random();
-        //Maze m = MazeFactory.getRandomMaze(ran, 10, 10)
-        Maze m = new MazeFactory().getEmptyMaze(5, 3);
-        m.setAllWalls(true);
-        //m.setHWall(0,0,true);
-        //m.setHWall(4,2,true);
-        m.setVWall(1,1,true);
-        m.setVWall(0,0,true);
-
-        BufferedImage img = new MazeFactory().getMazeAsImage(m);
-        ImageIO.write(img, "png", new File("img.png"));
-
     }
 
     /**
