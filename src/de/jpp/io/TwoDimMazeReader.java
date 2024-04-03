@@ -23,6 +23,7 @@ public class TwoDimMazeReader extends GridReaderTemplate<Maze> {
 
         for (int y = 0; y < input.getHeight(); y++) {
             for (int x = 0; x < input.getWidth(); x++) {
+
                 nodes.put(String.format("%s|%s", x * 2, y * 2), new XYNode("", x * 2, y * 2));
 
                 if (y < input.getHeight() - 1 && !input.isHWallActive(x, y))

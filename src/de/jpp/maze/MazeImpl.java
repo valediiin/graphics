@@ -16,10 +16,26 @@ public class MazeImpl implements Maze {
     public MazeImpl(int width, int height) {
         this.width = width;
         this.height = height;
-        IntStream.range(0, height - 1).forEach(i -> hWalls.add(IntStream.range(0, width).mapToObj(si -> false).collect(Collectors.toList())));
-        IntStream.range(0, height).forEach(i -> vWalls.add(IntStream.range(0, width - 1).mapToObj(si -> false).collect(Collectors.toList())));
+        IntStream.range(0, height - 1).forEach(i -> hWalls.add(IntStream.range(0, width).mapToObj(si -> true).collect(Collectors.toList())));
+        IntStream.range(0, height).forEach(i -> vWalls.add(IntStream.range(0, width - 1).mapToObj(si -> true).collect(Collectors.toList())));
 
+        /*// Initialisierung von hWalls
+        for (int i = 0; i < height - 1; i++) {
+            List<Boolean> row = new ArrayList<>();
+            for (int j = 0; j < width; j++) {
+                row.add(Boolean.FALSE); // Jede Wand auf 'false' setzen
+            }
+            hWalls.add(row);
+        }
 
+        // Initialisierung von vWalls
+        for (int i = 0; i < height; i++) {
+            List<Boolean> column = new ArrayList<>();
+            for (int j = 0; j < width - 1; j++) {
+                column.add(Boolean.FALSE); // Jede Wand auf 'false' setzen
+            }
+            vWalls.add(column);
+        }*/
     }
 
     /**
@@ -32,13 +48,9 @@ public class MazeImpl implements Maze {
     @Override
     public void setHWall(int x, int y, boolean wallActive) {
 
-        if(x >= 0 && x < width && y >= 0 && y < height - 1){
-            hWalls.get(y).set(x, wallActive);
-            System.out.println("Horizontale Wand " + x + " " + y);
-        } else {
-            throw new IllegalArgumentException("setHWall Invalid x and y");
-        }
+        System.out.println("Horizontale Wand gesetzt : " + x + "/" + y);
 
+        hWalls.get(y).set(x, wallActive);
     }
 
     /**
@@ -51,12 +63,9 @@ public class MazeImpl implements Maze {
     @Override
     public void setVWall(int x, int y, boolean wallActive) {
 
-        if(x >= 0 && x < width - 1 && y >= 0 && y < height){
-            System.out.println("Vertikale Wand " + x + " " + y);
-            vWalls.get(y).set(x, wallActive);
-        } else {
-            throw new IllegalArgumentException("Invalid x and y");
-        }
+        System.out.println("Vertikale Wand gesetzt : " + x + "/" + y);
+
+        vWalls.get(y).set(x, wallActive);
     }
 
     /**
@@ -76,7 +85,7 @@ public class MazeImpl implements Maze {
         }
 
         /*Collections.fill(hWalls.get(0), true);
-        Collections.fill(hWalls hWalls.get(0));
+        Collections.fill(hWalls, hWalls.get(0));
         Collections.fill(vWalls.get(0), true);
         Collections.fill(vWalls, vWalls.get(0));*/
     }
@@ -111,12 +120,9 @@ public class MazeImpl implements Maze {
     @Override
     public boolean isHWallActive(int x, int y) {
 
-        if(x >= 0 && x < width && y >= 0 && y < height - 1){
-            return hWalls.get(y).get(x);
-        } else {
-            System.out.println("hello");
-            throw new IllegalArgumentException("isHWall Active Invalid x and y");
-        }
+        System.out.println(hWalls.get(y).get(x) + " Horizontale Wand aktiv : " + x + "/" + y);
+        return hWalls.get(y).get(x);
+
     }
 
     /**
@@ -129,11 +135,9 @@ public class MazeImpl implements Maze {
     @Override
     public boolean isVWallActive(int x, int y) {
 
-        if(x >= 0 && x < width - 1 && y >= 0 && y < height){
-            return vWalls.get(y).get(x);
-        } else {
-            throw new IllegalArgumentException("Invalid x and y");
-        }
+        System.out.println(vWalls.get(y).get(x) + " Vertikale Wand aktiv: " + x + "/" + y);
+        return vWalls.get(y).get(x);
+
     }
 
     @Override

@@ -18,9 +18,9 @@ public class MazeFactory {
 
     public static void main(String[] args) throws IOException {
         Random ran = new Random();
-        //Maze m = MazeFactory.getRandomMaze(ran, 10, 15);
+        //Maze m = MazeFactory.getRandomMaze(ran, 10, 10)
         Maze m = new MazeFactory().getEmptyMaze(5, 5);
-        m.setHWall(0,0, true);
+        //m.setHWall(0,0, true);
         BufferedImage img = new MazeFactory().getMazeAsImage(m);
         ImageIO.write(img, "png", new File("img.png"));
 
@@ -43,6 +43,7 @@ public class MazeFactory {
         return m;
     }
 
+
     private static void divide(Maze m, Random ran, int x, int y, int w, int h) {
         if (w < 2 || h < 2)
             return;
@@ -64,11 +65,15 @@ public class MazeFactory {
         int rnd2 = ran.nextInt(w);
 
         for (int i = 0; i < w; i++)
-            if (i != rnd2)
+            if (i != rnd2) {
+                System.out.println("Setting HWall at: " + (x + i) + "|" + (y + rnd1) + " to " + true);
                 m.setHWall(x + i, y + rnd1, true);
+            }
+
 
         divide(m, ran, x, y, w, rnd1 + 1);
         divide(m, ran, x, y + rnd1 + 1, w, h - rnd1 - y - 1);
+        //divide(m, ran, x, y + rnd1 + 1, w, h - rnd1 - 1);
     }
 
     private static void divideHoriz(Maze m, Random ran, int x, int y, int w, int h) {
@@ -81,6 +86,7 @@ public class MazeFactory {
 
         divide(m, ran, x, y, rnd1 + 1, h);
         divide(m, ran, x + rnd1 + 1, y, w - rnd1 - x - 1, h);
+        //divide(m, ran, x + rnd1 + 1, y, w - rnd1 - 1, h);
     }
 
     /**
@@ -107,29 +113,35 @@ public class MazeFactory {
 
         BufferedImage img = new BufferedImage(maze.getWidth() * 2 + 1, maze.getHeight() * 2 + 1, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics = img.createGraphics();
-        graphics.setPaint(white);
-        //graphics.fillRect(1, 1, maze.getWidth() * 2 - 1, maze.getHeight() * 2 - 1);
+        graphics.setPaint(white); // Das ganze bild auf weiß setzen
         graphics.fillRect(1, 1, maze.getWidth() * 2 - 1, maze.getHeight() * 2 - 1);
-        // Zellen auf weiß setzen
-        for (int y = 0; y < maze.getHeight(); y++) {
 
-            for (int x = 1; x < maze.getWidth(); x++) { // x = 0 --> 1/2 ist gerade schwarz, sollte weiß sein x = 1 --> 2/1 ist gerade weiß, sollte schwarz sein
-                    img.setRGB(x * 2, y * 2, black.getRGB());
-                System.out.println("Position x:" + x + " y:" + y + " Farbe: " + img.getRGB(x,y));
+        // ALTER CODE
+       for (int y = 0; y < maze.getHeight(); y++) {
+            for (int x = 0; x < maze.getWidth(); x++) {
+                img.setRGB(x * 2, y * 2, black.getRGB());
 
-                if (y < maze.getHeight() - 1 && maze.isHWallActive(x, y))
-                    img.setRGB(x * 2 + 1, y * 2 + 2, black.getRGB());
-                System.out.println("Horizontale Wand aktiv an Position x:" + x + " y:" + y  + " Farbe: " + img.getRGB(x,y));
+               if (y < maze.getHeight() - 1 && maze.isHWallActive(x, y))
+                   //System.out.println(maze.isHWallActive(x, y) + " " + x + "/" + y);
+                   //System.out.println(!maze.isVWallActive(x, y) + " " + x + "/" + y);
+                   img.setRGB(x * 2, y * 2, black.getRGB());
 
-                if (x < maze.getWidth() - 1 && maze.isVWallActive(x, y))
-                    img.setRGB(x * 2 + 2, y * 2 + 1, black.getRGB());
-                System.out.println("Vertikale Wand aktiv an Position x:" + x + " y:" + y + " Farbe: " + img.getRGB(x,y));
+
+               if (x < maze.getWidth() - 1 && maze.isVWallActive(x, y))
+                   //System.out.println(maze.isVWallActive(x, y) + " " + x + "/" + y);
+                   //System.out.println(!maze.isHWallActive(x, y) + " " + x + "/" + y);
+                   img.setRGB(x * 2, y * 2, black.getRGB());
+
             }
-
         }
 
+       System.out.println("-".repeat(60));
+       for(int y = 0; y < maze.getHeight() * 2; y++){
+           for(int x = 0; x < maze.getWidth() * 2; x++){
+               System.out.println(x + "/" + y + " " + img.getRGB(x,y));
+           }
+       }
         return img;
-
     }
 
     /**
