@@ -16,15 +16,7 @@ import java.util.Random;
 
 public class MazeFactory {
 
-    public static void main(String[] args) throws IOException {
-        Random ran = new Random();
-        //Maze m = MazeFactory.getRandomMaze(ran, 10, 10)
-        Maze m = new MazeFactory().getEmptyMaze(5, 5);
-        //m.setHWall(0,0, true);
-        BufferedImage img = new MazeFactory().getMazeAsImage(m);
-        ImageIO.write(img, "png", new File("img.png"));
 
-    }
 
     /**
      * Returns a random maze with specified width, height created by the specified algorithm specified from
@@ -109,6 +101,8 @@ public class MazeFactory {
     public BufferedImage getMazeAsImage(Maze maze) {
         Color black = new Color(0, 0, 0);
         Color white = new Color(255, 255, 255);
+        Color yellow = new Color(255,255,0);
+        Color orange = new Color(255,105,0);
 
 
         BufferedImage img = new BufferedImage(maze.getWidth() * 2 + 1, maze.getHeight() * 2 + 1, BufferedImage.TYPE_INT_RGB);
@@ -116,32 +110,86 @@ public class MazeFactory {
         graphics.setPaint(white); // Das ganze bild auf weiß setzen
         graphics.fillRect(1, 1, maze.getWidth() * 2 - 1, maze.getHeight() * 2 - 1);
 
-        // ALTER CODE
+
        for (int y = 0; y < maze.getHeight(); y++) {
             for (int x = 0; x < maze.getWidth(); x++) {
                 img.setRGB(x * 2, y * 2, black.getRGB());
 
-               if (y < maze.getHeight() - 1 && maze.isHWallActive(x, y))
-                   //System.out.println(maze.isHWallActive(x, y) + " " + x + "/" + y);
-                   //System.out.println(!maze.isVWallActive(x, y) + " " + x + "/" + y);
+
+               if (y < maze.getHeight() - 1 && maze.isHWallActive(x, y)) {
+                   img.setRGB(x * 2 , y * 2, black.getRGB());
+
+               }
+
+               if (x < maze.getWidth() - 1 && maze.isVWallActive(x, y)) {
                    img.setRGB(x * 2, y * 2, black.getRGB());
 
-
-               if (x < maze.getWidth() - 1 && maze.isVWallActive(x, y))
-                   //System.out.println(maze.isVWallActive(x, y) + " " + x + "/" + y);
-                   //System.out.println(!maze.isHWallActive(x, y) + " " + x + "/" + y);
-                   img.setRGB(x * 2, y * 2, black.getRGB());
+               }
 
             }
         }
 
-       System.out.println("-".repeat(60));
-       for(int y = 0; y < maze.getHeight() * 2; y++){
-           for(int x = 0; x < maze.getWidth() * 2; x++){
-               System.out.println(x + "/" + y + " " + img.getRGB(x,y));
+      /* // HWall
+       for(int y = 0; y < maze.getHeight(); y++){
+           for(int x = 0; x < maze.getWidth() - 1; x++){
+
+               if(maze.isHWallActive(x,y)){
+                   img.setRGB(x * 2 + 2,y * 2 + 1, yellow.getRGB());
+                   System.out.println(x * 2 + 2 + " " + y);
+               } else {
+                   img.setRGB(x * 2 + 2,y * 2 + 1, white.getRGB());
+               }
            }
        }
+
+        // VWall
+        for(int y = 0; y < maze.getHeight() - 1; y++){
+            for(int x = 0; x < maze.getWidth(); x++){
+
+                if(maze.isVWallActive(x,y)){
+                    img.setRGB(x * 2 + 1,y * 2 + 2, orange.getRGB());
+                    System.out.println(x * 2 + 1 + " " + y);
+                } else {
+                    img.setRGB(x * 2 + 1,y * 2 + 2, white.getRGB());
+                }
+            }
+        }*/
+
+        for (int y = 0; y < maze.getHeight(); y++) {
+            for (int x = 0; x < maze.getWidth(); x++) {
+                // Horizontale Wand und nicht am unteren Rand des Labyrinths
+                if (y < maze.getHeight() - 1) {
+                    if (maze.isHWallActive(x, y)) {
+                        img.setRGB((x * 2) + 2, (y * 2) + 1, yellow.getRGB());
+                    }
+                }
+
+                // Vertikale Wand und nicht am rechten Rand des Labyrinths
+                if (x < maze.getWidth() - 1) {
+                    if (maze.isVWallActive(x, y)) {
+                        // Beibehalten der korrekten Position für das Zeichnen der vertikalen Wand
+                        img.setRGB((x * 2) + 1, (y * 2) + 2, orange.getRGB());
+                    }
+                }
+            }
+        }
+
         return img;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Random ran = new Random();
+        //Maze m = MazeFactory.getRandomMaze(ran, 10, 10)
+        Maze m = new MazeFactory().getEmptyMaze(5, 3);
+        m.setAllWalls(true);
+        //m.setHWall(0,0,true);
+        //m.setHWall(4,2,true);
+        m.setVWall(1,1,true);
+        m.setVWall(0,0,true);
+
+        BufferedImage img = new MazeFactory().getMazeAsImage(m);
+        ImageIO.write(img, "png", new File("img.png"));
+
     }
 
     /**

@@ -16,25 +16,29 @@ public class MazeImpl implements Maze {
     public MazeImpl(int width, int height) {
         this.width = width;
         this.height = height;
-        IntStream.range(0, height - 1).forEach(i -> hWalls.add(IntStream.range(0, width).mapToObj(si -> true).collect(Collectors.toList())));
-        IntStream.range(0, height).forEach(i -> vWalls.add(IntStream.range(0, width - 1).mapToObj(si -> true).collect(Collectors.toList())));
+        IntStream.range(0, height).forEach(i -> hWalls.add(IntStream.range(0, width - 1).mapToObj(si -> false).collect(Collectors.toList())));
+        IntStream.range(0, height - 1).forEach(i -> vWalls.add(IntStream.range(0, width).mapToObj(si -> false).collect(Collectors.toList())));
 
-        /*// Initialisierung von hWalls
+        System.out.println(hWalls);
+        System.out.println(vWalls);
+        //System.out.println(hWalls);
+
+        /*// Erstellen der horizontalen Wände (hWalls)
         for (int i = 0; i < height - 1; i++) {
             List<Boolean> row = new ArrayList<>();
-            for (int j = 0; j < width; j++) {
-                row.add(Boolean.FALSE); // Jede Wand auf 'false' setzen
+            for (int si = 0; si < width; si++) {
+                row.add(false);
             }
             hWalls.add(row);
         }
 
-        // Initialisierung von vWalls
+        // Erstellen der vertikalen Wände (vWalls)
         for (int i = 0; i < height; i++) {
-            List<Boolean> column = new ArrayList<>();
-            for (int j = 0; j < width - 1; j++) {
-                column.add(Boolean.FALSE); // Jede Wand auf 'false' setzen
+            List<Boolean> row = new ArrayList<>();
+            for (int si = 0; si < width - 1; si++) {
+                row.add(false);
             }
-            vWalls.add(column);
+            vWalls.add(row);
         }*/
     }
 
@@ -51,6 +55,7 @@ public class MazeImpl implements Maze {
         System.out.println("Horizontale Wand gesetzt : " + x + "/" + y);
 
         hWalls.get(y).set(x, wallActive);
+
     }
 
     /**
@@ -66,6 +71,7 @@ public class MazeImpl implements Maze {
         System.out.println("Vertikale Wand gesetzt : " + x + "/" + y);
 
         vWalls.get(y).set(x, wallActive);
+
     }
 
     /**
@@ -76,13 +82,32 @@ public class MazeImpl implements Maze {
     @Override
     public void setAllWalls(boolean wallActive) {
 
-        for(List<Boolean> row : hWalls){
+        //hWalls
+        System.out.println(hWalls);
+        for(int i = 0; i < height; i++){
+            for (int j = 0; j < width - 1; j++){
+                System.out.println(i + " " + j);
+                hWalls.get(i).set(j, wallActive);
+            }
+        }
+
+        //vWalls
+        System.out.println(vWalls);
+        for(int i = 0; i < height - 1; i++){
+            for (int j = 0; j < width - 1; j++){
+                //System.out.println(i + " " + j);
+                vWalls.get(i).set(j, wallActive);
+            }
+        }
+
+
+      /*  for(List<Boolean> row : hWalls){
             Collections.fill(row, wallActive);
         }
 
         for(List<Boolean> row : vWalls){
             Collections.fill(row, wallActive);
-        }
+        }*/
 
         /*Collections.fill(hWalls.get(0), true);
         Collections.fill(hWalls, hWalls.get(0));
@@ -120,9 +145,11 @@ public class MazeImpl implements Maze {
     @Override
     public boolean isHWallActive(int x, int y) {
 
-        System.out.println(hWalls.get(y).get(x) + " Horizontale Wand aktiv : " + x + "/" + y);
-        return hWalls.get(y).get(x);
+        if(x >= 0 && x < width - 1 && y >= 0 && y < height){
+            return hWalls.get(y).get(x);
+        }
 
+        return false;
     }
 
     /**
@@ -135,9 +162,11 @@ public class MazeImpl implements Maze {
     @Override
     public boolean isVWallActive(int x, int y) {
 
-        System.out.println(vWalls.get(y).get(x) + " Vertikale Wand aktiv: " + x + "/" + y);
-        return vWalls.get(y).get(x);
+        if(x >= 0 && x < width && y >= 0 && y < height - 1){
+            return vWalls.get(y).get(x);
+        }
 
+        return false;
     }
 
     @Override
